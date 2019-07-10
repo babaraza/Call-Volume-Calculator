@@ -13,16 +13,27 @@ def generate_filenames():
         years_array[year_number] = {}
         months = years.glob('*')
         for month in months:
+            in_count = 0
+            out_count = 0
             month_number = str(month)[-2:]
             years_array[year_number][month_number] = {}
             filenames = month.glob('*.wav')
             for filename in filenames:
                 if str(filename).endswith("IN.wav"):
                     in_count += 1
-                    years_array[year_number][month_number]['Incoming'] = in_count
                 else:
                     out_count += 1
-                    years_array[year_number][month_number]['Outgoing'] = out_count
+            filename_zips = month.glob('*.zip')
+            for filename_zip in filename_zips:
+                zip_file = zipfile.ZipFile(filename_zip, 'r')
+                for name in zip_file.namelist():
+                    if str(name).endswith("IN.wav"):
+                        in_count += 1
+                    else:
+                        out_count += 1
+                zip_file.close()
+            years_array[year_number][month_number]['Incoming'] = in_count
+            years_array[year_number][month_number]['Outgoing'] = out_count
     print(years_array)
     # print(f"Incoming: {in_count} and Outgoing: {out_count}")
 
