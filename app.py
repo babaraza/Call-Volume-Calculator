@@ -14,15 +14,16 @@ def generate_filenames():
         months = years.glob('*')
         for month in months:
             month_number = str(month)[-2:]
-            years_array[year_number][month_number] = ""
-    print(f"Full years: \n\t{len(years_array)}")
+            years_array[year_number][month_number] = {}
+            filenames = month.glob('*.wav')
+            for filename in filenames:
+                if str(filename).endswith("IN.wav"):
+                    in_count += 1
+                    years_array[year_number][month_number]['Incoming'] = in_count
+                else:
+                    out_count += 1
+                    years_array[year_number][month_number]['Outgoing'] = out_count
     print(years_array)
-    #         filenames = month.glob('*.wav')
-    #         for filename in filenames:
-    #             if str(filename).endswith("IN.wav"):
-    #                 in_count += 1
-    #             else:
-    #                 out_count += 1
     # print(f"Incoming: {in_count} and Outgoing: {out_count}")
 
 generate_filenames()
