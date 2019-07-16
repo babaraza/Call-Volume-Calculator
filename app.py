@@ -64,9 +64,5 @@ for years_in_array, months_in_array in test_array.items():
 
 wb.save('C:/Users/a058943/Desktop/CALLS/Log Test.xlsx')
 
-
-
 # TODO:
-#   Create Excel File
-#   Create Sheet for each year or table
 #   Put results for each month
