@@ -1,14 +1,18 @@
-import zipfile
-from pathlib import Path
-import openpyxl as xl
+from openpyxl import load_workbook
 from datetime import datetime
+from pathlib import Path
+import pandas as pd
+import zipfile
+
 
 # Create empty dictionary
 years_array = {}
+main_dir = 'C:/Users/a058943/Desktop/CALLS/'
+
 
 # Look through Call Directory for wav/zip files
-def generate_filenames():
-    calls_dir = Path("C:/Users/a058943/Desktop/CALLS/").glob('*[0-9]')
+def generate_data():
+    calls_dir = Path(main_dir).glob('*[0-9]')
     for years in calls_dir:  # Returns the entire path of folder
         year_number = str(years)[-4:]  # Getting last 4 digits of the year folder (ex: 2018)
         years_array[year_number] = {}
@@ -33,39 +37,36 @@ def generate_filenames():
                         in_count += 1
                     else:
                         out_count += 1  # OUT.wav would be outgoing calls
-                else:
-                    print(f"File extension {str(filename)[-4:]} is not supported")  # Any file extension other than .wav or .zip
+                else:  # Any file extension other than .wav or .zip
+                    print(f"File extension {str(filename)[-4:]} is not supported")
             years_array[year_number][month_number]['Incoming'] = in_count
             years_array[year_number][month_number]['Outgoing'] = out_count
 
 
-# Save an Excel file with results
+# Save File to Excel
 def save_file(filename):
-    save_filename = 'C:/Users/a058943/Desktop/CALLS/' + filename + '.xlsx'
+    # Creating Data Frame with Data from Dictionary
+    final_df = pd.concat({k: pd.DataFrame(v).transpose() for k, v in years_array.items()}, sort=True, axis=1)
+
+    save_filename = main_dir + filename + '.xlsx'
+    print(f'Working Directory: {main_dir}')
     check_path = Path(save_filename)
 
 # Checking if file already exists
     if check_path.exists():
-        print(f'{filename} already exists, creating new sheet')
-        wb = xl.load_workbook(save_filename)
-        ws = wb.create_sheet()
-        ws.title = datetime.today().strftime('%m-%d-%y')
+        print(f'{filename}.xlsx already exists, creating new sheet')
+        book = load_workbook(save_filename)
+        writer = pd.ExcelWriter(save_filename, engine='openpyxl')
+        writer.book = book
+        # Putting data into the Excel Sheet
+        final_df.to_excel(writer, sheet_name=datetime.today().strftime('%m-%d-%y'))
+        writer.save()
+        writer.close()
     else:
-        print(f'{filename} doesnt exist, creating new file')
-        wb = xl.Workbook()
-        ws = wb.active
-        ws.title = datetime.today().strftime('%m-%d-%y')
+        print(f'{filename}.xlsx doesnt exist, creating new file')
+        # Putting data into the Excel Sheet
+        final_df.to_excel(save_filename, sheet_name=datetime.today().strftime('%m-%d-%y'))
 
-# Putting data into the Excel Sheet
-    for years_in_array, months_in_array in years_array.items():
-        ws.append([years_in_array])
-        for subMonths, total_calls in months_in_array.items():
-            ws.append([subMonths])
-            for call_labels, call_counts in total_calls.items():
-                ws.append([call_labels, call_counts])
-            ws.append([""])
 
-    wb.save(save_filename)  # Save Excel file
-
-generate_filenames()
+generate_data()
 save_file('Call Logs')
