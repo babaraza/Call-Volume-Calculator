@@ -1,4 +1,4 @@
-[![Python 3.7](https://img.shields.io/badge/Python-3.6-blue.svg)](https://www.python.org/downloads/release/python-374/)
+[![Python 3.8](https://img.shields.io/badge/Python-3.8-blue.svg)](https://www.python.org/downloads/release/python-38/)
 
 # Call Volume Calculator
 Calculate Call Volume by scanning Recorded `CALLS` Folder
