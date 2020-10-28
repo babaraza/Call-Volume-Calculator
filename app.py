@@ -1,13 +1,18 @@
 from openpyxl import load_workbook
+from dotenv import load_dotenv
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
 import zipfile
+import os
 
+load_dotenv()
 
 # Create empty dictionary
 years_array = {}
-main_dir = 'C:/Users/a058943/Desktop/CALLS/'
+
+# Path to the dictionary
+main_dir = os.getenv('DIR_PATH')
 
 
 # Look through Call Directory for wav/zip files
@@ -52,7 +57,7 @@ def save_file(filename):
     print(f'Working Directory: {main_dir}')
     check_path = Path(save_filename)
 
-# Checking if file already exists
+    # Checking if file already exists
     if check_path.exists():
         print(f'{filename}.xlsx already exists, creating new sheet')
         book = load_workbook(save_filename)
