@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
+import datetime
 import zipfile
 import json
 import os
@@ -83,4 +84,16 @@ def create_excel():
 
     save_file('Call Logs', data)
 
+
 # TODO: parse data
+
+def parse_time(time_string: str):
+    """
+    125716 remove last 2 digits 1257 + 200 = 1457 (- 1200) = 2:57 pm
+    074433 remove last 2 digits 0744 + 200 = 0944 = 9:44 am
+    """
+
+    time_string = int(time_string[:-2])
+    time_string += 200
+
+    return datetime.datetime.strptime(str(time_string), '%H%M').strftime('%I:%M %p')
