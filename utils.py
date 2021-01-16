@@ -30,9 +30,9 @@ def save_file_old(main_dir, filename, data):
         final_df.to_excel(save_filename, sheet_name=datetime.today().strftime('%m-%d-%y'))
 
 
-def save_file(main_dir, filename, data):
+def create_excel(main_dir, filename, data):
     # Creating Data Frame with Data from JSON
-    final_df = pd.concat({k: pd.DataFrame(v).transpose() for k, v in data.items()}, sort=True, axis=1)
+    final_df = pd.DataFrame(data)
 
     save_filename = main_dir + filename + '.xlsx'
     print(f'Working Directory: {main_dir}')

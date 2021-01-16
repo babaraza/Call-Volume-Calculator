@@ -1,4 +1,4 @@
-from utils import save_file, parse_month, parse_date, parse_time, parse_call_number
+from utils import create_excel, parse_month, parse_date, parse_time, parse_call_number
 from dotenv import load_dotenv
 from pathlib import Path
 import zipfile
@@ -55,11 +55,6 @@ def load_json(filename):
     return data
 
 
-def create_excel(data, target_file_path):
-    # Creating an excel file with json data
-    save_file(target_file_path, 'Call Logs', data)
-
-
 def parse_data(data):
     final_data = {}
 
@@ -89,4 +84,3 @@ def parse_data(data):
 
 raw_data = load_json('data-with-time.json')
 parsed_data = parse_data(raw_data)
-
