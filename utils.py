@@ -5,8 +5,8 @@ import pandas as pd
 import datetime
 
 
-# Save File to Excel
-def save_file(main_dir, filename, data):
+# Save File to Excel [OLD]
+def save_file_old(main_dir, filename, data):
     # Creating Data Frame with Data from Dictionary
     final_df = pd.concat({k: pd.DataFrame(v).transpose() for k, v in data.items()}, sort=True, axis=1)
 
@@ -28,6 +28,30 @@ def save_file(main_dir, filename, data):
         print(f'{filename}.xlsx doesnt exist, creating new file')
         # Putting data into the Excel Sheet
         final_df.to_excel(save_filename, sheet_name=datetime.today().strftime('%m-%d-%y'))
+
+
+def save_file(main_dir, filename, data):
+    # Creating Data Frame with Data from JSON
+    final_df = pd.concat({k: pd.DataFrame(v).transpose() for k, v in data.items()}, sort=True, axis=1)
+
+    save_filename = main_dir + filename + '.xlsx'
+    print(f'Working Directory: {main_dir}')
+    check_path = Path(save_filename)
+
+    # Checking if file already exists
+    if check_path.exists():
+        print(f'{filename}.xlsx already exists, creating new sheet')
+        book = load_workbook(save_filename)
+        writer = pd.ExcelWriter(save_filename, engine='openpyxl')
+        writer.book = book
+        # Putting data into the Excel Sheet
+        final_df.to_excel(writer, sheet_name=datetime.datetime.today().strftime('%m-%d-%y'))
+        writer.save()
+        writer.close()
+    else:
+        print(f'{filename}.xlsx doesnt exist, creating new file')
+        # Putting data into the Excel Sheet
+        final_df.to_excel(save_filename, sheet_name=datetime.datetime.today().strftime('%m-%d-%y'))
 
 
 def parse_time(time_string: str):

@@ -49,15 +49,15 @@ def create_json(data, filename):
         json.dump(data, file)
 
 
-def load_json():
-    with open('data-with-time.json', 'r') as file:
+def load_json(filename):
+    with open(filename, 'r') as file:
         data = json.load(file)
     return data
 
 
-def create_excel(data):
+def create_excel(data, target_file_path):
     # Creating an excel file with json data
-    save_file(main_dir, 'Call Logs', data)
+    save_file(target_file_path, 'Call Logs', data)
 
 
 def parse_data(data):
@@ -87,6 +87,6 @@ def parse_data(data):
     return final_data
 
 
-data3 = load_json()
-data4 = parse_data(data3)
-create_json(data4, 'test.json')
+raw_data = load_json('data-with-time.json')
+parsed_data = parse_data(raw_data)
+
