@@ -40,3 +40,11 @@ def parse_time(time_string: str):
     time_string += 200
 
     return datetime.datetime.strptime(str(time_string), '%H%M').strftime('%I:%M %p')
+
+
+def parse_month(month, abbreviated):
+    return datetime.datetime.strptime(month, '%m').strftime('%b' if abbreviated else '%B')
+
+
+def parse_date(date):
+    return datetime.datetime.strptime(date, '%Y%m%d').strftime('%D')
