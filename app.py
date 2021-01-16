@@ -70,17 +70,19 @@ def parse_data(data):
             # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (1 OF 2)
             # month = parse_month(month=month, abbreviated=False)
             # final_data[year][month] = {}
-            for call in calls[0:2]:
+            for call in calls[0:5]:
                 call_data = call.split("-")
                 call_date = parse_date(call_data[0].split("_")[0])
                 call_time = parse_time(call_data[0].split("_")[1])
                 call_number = call_data[1]
                 call_direction = call_data[2].split(".")[0]
                 # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (2 OF 2)
-                # final_data[year][month].setdefault(call_date, {call_direction: ''})
-                # final_data[year][month][call_date][call_direction] = f'{call_time} - {call_number}'
-                final_data[year].setdefault(call_date, {call_direction: ''})
-                final_data[year][call_date][call_direction] = f'{call_time} - {call_number}'
+                # final_data[year][month].setdefault(call_date, {})
+                # final_data[year][month][call_date].setdefault(call_direction, [])
+                # final_data[year][month][call_date][call_direction].append(f'{call_time} - {call_number}')
+                final_data[year].setdefault(call_date, {})
+                final_data[year][call_date].setdefault(call_direction, [])
+                final_data[year][call_date][call_direction].append(f'{call_time} - {call_number}')
 
     return final_data
 
