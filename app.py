@@ -60,7 +60,8 @@ def parse_data(data):
 
     for year, call_log in data.items():
         print(year)
-        final_data[year] = {}
+        # UNCOMMENT THIS FOR CREATING A YEAR KEY FOR EACH YEAR
+        # final_data[year] = {}
         for month, calls in call_log.items():
             # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (1 OF 2)
             # month = parse_month(month=month, abbreviated=False)
@@ -75,9 +76,9 @@ def parse_data(data):
                 # final_data[year][month].setdefault(call_date, {})
                 # final_data[year][month][call_date].setdefault(call_direction, [])
                 # final_data[year][month][call_date][call_direction].append(f'{call_time} - {call_number}')
-                final_data[year].setdefault(call_date, {})
-                final_data[year][call_date].setdefault(call_direction, [])
-                final_data[year][call_date][call_direction].append(f'{call_time} - {call_number}')
+                final_data.setdefault(call_date, {})
+                final_data[call_date].setdefault(call_direction, [])
+                final_data[call_date][call_direction].append(f'{call_time} - {call_number}')
 
     return final_data
 

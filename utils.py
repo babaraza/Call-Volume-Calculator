@@ -32,7 +32,7 @@ def save_file_old(main_dir, filename, data):
 
 def create_excel(main_dir, filename, data):
     # Creating Data Frame with Data from JSON
-    final_df = pd.DataFrame(data)
+    final_df = pd.DataFrame(data).transpose()
 
     save_filename = main_dir + filename + '.xlsx'
     print(f'Working Directory: {main_dir}')
