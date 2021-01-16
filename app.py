@@ -43,10 +43,10 @@ def generate_data():
     return years_array
 
 
-def create_json():
+def create_json(data, filename):
     # Creating a json file with complete call data:
-    with open('data.json', 'w') as file:
-        json.dump(generate_data(), file)
+    with open(filename, 'w') as file:
+        json.dump(data, file)
 
 
 def load_json():
@@ -60,17 +60,31 @@ def create_excel(data):
     save_file(main_dir, 'Call Logs', data)
 
 
-# TODO: parse data
-final_data = []
+def parse_data(data):
+    final_data = {}
 
-for year, call_log in load_json().items():
-    print(year)
-    for month, calls in call_log.items():
-        print(parse_month(month=month, abbreviated=True))
-        for call in calls[0:1]:
-            call_data = call.split("-")
-            call_date = parse_date(call_data[0].split("_")[0])
-            call_time = parse_time(call_data[0].split("_")[1])
-            call_number = call_data[1]
-            call_direction = call_data[2].split(".")[0]
-            print(f'{call_direction} - On {call_date} at {call_time} from {call_number}')
+    for year, call_log in data.items():
+        print(year)
+        final_data[year] = {}
+        for month, calls in call_log.items():
+            # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (1 OF 2)
+            # month = parse_month(month=month, abbreviated=False)
+            # final_data[year][month] = {}
+            for call in calls[0:2]:
+                call_data = call.split("-")
+                call_date = parse_date(call_data[0].split("_")[0])
+                call_time = parse_time(call_data[0].split("_")[1])
+                call_number = call_data[1]
+                call_direction = call_data[2].split(".")[0]
+                # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (2 OF 2)
+                # final_data[year][month].setdefault(call_date, {call_direction: ''})
+                # final_data[year][month][call_date][call_direction] = f'{call_time} - {call_number}'
+                final_data[year].setdefault(call_date, {call_direction: ''})
+                final_data[year][call_date][call_direction] = f'{call_time} - {call_number}'
+
+    return final_data
+
+
+data3 = load_json()
+data4 = parse_data(data3)
+create_json(data4, 'test.json')
