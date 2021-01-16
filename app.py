@@ -1,4 +1,4 @@
-from utils import save_file, parse_month, parse_date, parse_time
+from utils import save_file, parse_month, parse_date, parse_time, parse_call_number
 from dotenv import load_dotenv
 from pathlib import Path
 import zipfile
@@ -70,11 +70,11 @@ def parse_data(data):
             # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (1 OF 2)
             # month = parse_month(month=month, abbreviated=False)
             # final_data[year][month] = {}
-            for call in calls[0:5]:
+            for call in calls[0:10]:
                 call_data = call.split("-")
                 call_date = parse_date(call_data[0].split("_")[0])
                 call_time = parse_time(call_data[0].split("_")[1])
-                call_number = call_data[1]
+                call_number = parse_call_number(call_data[1])
                 call_direction = call_data[2].split(".")[0]
                 # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (2 OF 2)
                 # final_data[year][month].setdefault(call_date, {})

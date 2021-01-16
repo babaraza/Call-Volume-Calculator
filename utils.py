@@ -48,3 +48,10 @@ def parse_month(month, abbreviated):
 
 def parse_date(date):
     return datetime.datetime.strptime(date, '%Y%m%d').strftime('%D')
+
+
+def parse_call_number(number):
+    if number.startswith("%") or number.startswith("_"):
+        return "NA"
+    else:
+        return number
