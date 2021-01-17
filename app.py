@@ -9,6 +9,8 @@ load_dotenv()
 
 # Path to the call logs
 main_dir = os.getenv('DIR_PATH')
+# Path to the directory where to save file
+save_dir = os.getenv('SAVE_PATH')
 
 
 # Look through Call Directory for wav/zip files
@@ -60,28 +62,29 @@ def parse_data(data):
 
     for year, call_log in data.items():
         print(year)
-        # UNCOMMENT THIS FOR CREATING A YEAR KEY FOR EACH YEAR
+        # UNCOMMENT THIS FOR CREATING A YEAR KEY FOR EACH YEAR (1 OF 3)
         # final_data[year] = {}
         for month, calls in call_log.items():
-            # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (1 OF 2)
+            # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (2 OF 3)
             # month = parse_month(month=month, abbreviated=False)
             # final_data[year][month] = {}
-            for call in calls[0:10]:
+            for call in calls[0:5]:
                 call_data = call.split("-")
                 call_date = parse_date(call_data[0].split("_")[0])
                 call_time = parse_time(call_data[0].split("_")[1])
                 call_number = parse_call_number(call_data[1])
                 call_direction = call_data[2].split(".")[0]
-                # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (2 OF 2)
+                # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (3 OF 3)
                 # final_data[year][month].setdefault(call_date, {})
                 # final_data[year][month][call_date].setdefault(call_direction, [])
                 # final_data[year][month][call_date][call_direction].append(f'{call_time} - {call_number}')
-                final_data.setdefault(call_date, {})
-                final_data[call_date].setdefault(call_direction, [])
-                final_data[call_date][call_direction].append(f'{call_time} - {call_number}')
+                final_data.setdefault(call_date, [])
+                final_data[call_date].append(f'{call_direction} - {call_time} - {call_number}')
 
     return final_data
 
 
 raw_data = load_json('data-with-time.json')
 parsed_data = parse_data(raw_data)
+# print(json.dumps(parsed_data, indent=2))
+create_excel(save_dir, 'Call Logs', parsed_data)

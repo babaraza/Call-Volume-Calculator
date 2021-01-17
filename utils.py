@@ -32,8 +32,19 @@ def save_file_old(main_dir, filename, data):
 
 def create_excel(main_dir, filename, data):
     # Creating Data Frame with Data from JSON
-    final_df = pd.DataFrame(data).transpose()
 
+    temp_list = []
+
+    for k, v in data.items():
+        date = k
+        for item in v:
+            raw = item.split("-")
+            direction = raw[0].strip()
+            time = raw[1].strip()
+            number = raw[2].strip()
+            temp_list.append([date, direction, time, number])
+
+    df = pd.DataFrame(temp_list, columns=['Date', 'Direction', 'Time', 'Number'], index=None)
     save_filename = main_dir + filename + '.xlsx'
     print(f'Working Directory: {main_dir}')
     check_path = Path(save_filename)
@@ -45,13 +56,13 @@ def create_excel(main_dir, filename, data):
         writer = pd.ExcelWriter(save_filename, engine='openpyxl')
         writer.book = book
         # Putting data into the Excel Sheet
-        final_df.to_excel(writer, sheet_name=datetime.datetime.today().strftime('%m-%d-%y'))
+        df.to_excel(writer, sheet_name=datetime.datetime.today().strftime('%m-%d-%y'), index=False)
         writer.save()
         writer.close()
     else:
         print(f'{filename}.xlsx doesnt exist, creating new file')
         # Putting data into the Excel Sheet
-        final_df.to_excel(save_filename, sheet_name=datetime.datetime.today().strftime('%m-%d-%y'))
+        df.to_excel(save_filename, sheet_name=datetime.datetime.today().strftime('%m-%d-%y'), index=False)
 
 
 def parse_time(time_string: str):
