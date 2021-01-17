@@ -1,4 +1,9 @@
 .idea/
 __pycache__/
 .env
+<<<<<<< HEAD
 *.txt
+=======
+*.json
+*.xlsx
+>>>>>>> feature-pull-all-data
