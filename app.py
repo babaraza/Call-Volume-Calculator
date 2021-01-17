@@ -68,7 +68,7 @@ def parse_data(data):
             # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (2 OF 3)
             # month = parse_month(month=month, abbreviated=False)
             # final_data[year][month] = {}
-            for call in calls[0:5]:
+            for call in calls:
                 call_data = call.split("-")
                 call_date = parse_date(call_data[0].split("_")[0])
                 call_time = parse_time(call_data[0].split("_")[1])
