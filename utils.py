@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 import pandas as pd
 import datetime
+import json
 
 
 # Save File to Excel [OLD]
@@ -30,11 +31,24 @@ def save_file_old(main_dir, filename, data):
         final_df.to_excel(save_filename, sheet_name=datetime.today().strftime('%m-%d-%y'))
 
 
+def create_json(data, filename):
+    # Creating a json file with complete call data:
+    with open(filename, 'w') as file:
+        json.dump(data, file)
+
+
+def load_json(filename):
+    # Loading JSON file with data
+    with open(filename, 'r') as file:
+        data = json.load(file)
+    return data
+
+
 def create_excel(main_dir, filename, data):
     # Creating Data Frame with Data from JSON
 
+    # Flatten JSON structure into a list
     temp_list = []
-
     for k, v in data.items():
         date = k
         for item in v:
