@@ -96,7 +96,7 @@ def parse_month(month, abbreviated):
 
 
 def parse_date(date):
-    return datetime.datetime.strptime(date, '%Y%m%d').strftime('%D')
+    return datetime.datetime.strptime(date, '%Y%m%d').strftime('%m/%d/%Y')
 
 
 def parse_call_number(number):

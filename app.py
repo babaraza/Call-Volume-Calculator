@@ -58,11 +58,12 @@ def parse_data(data):
             # month = parse_month(month=month, abbreviated=False)
             # final_data[year][month] = {}
             for call in calls:
-                call_data = call.split("-")
-                call_date = utils.parse_date(call_data[0].split("_")[0])
-                call_time = utils.parse_time(call_data[0].split("_")[1])
-                call_number = utils.parse_call_number(call_data[1])
-                call_direction = call_data[2].split(".")[0]
+                data_time, call_id, voip, number, direction = call.split("-")
+                date, time = data_time.split("_")
+                call_date = utils.parse_date(date)
+                call_time = utils.parse_time(time)
+                call_number = utils.parse_call_number(number)
+                call_direction = direction.split(".")[0]
                 # UNCOMMENT THIS FOR CREATING A MONTH KEY FOR EACH MONTH (3 OF 3)
                 # final_data[year][month].setdefault(call_date, {})
                 # final_data[year][month][call_date].setdefault(call_direction, [])
